@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTUM8 — Digital Operations Intelligence</title>
+    <!-- Favicon linked to your uploaded image -->
+    <link rel="icon" type="image/jpeg" href="autum8_favicon.jpg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            teal: '#8B5CF6',  // Violet Primary (Matches Logo)
+                            blue: '#3B82F6',  // Blue Secondary
+                            purple: '#D8B4FE', // Lavender Accent
+                            ink: '#0B1220',   // Midnight Ink
+                            gray: {
+                                1: '#F7F9FC', 
+                                2: '#E5E7EB', 
+                            },
+                            muted: '#6B7280', 
+                            darkcard: '#111827', 
+                        }
+                    },
+                    boxShadow: {
+                        'premium': '0 10px 40px rgba(0,0,0,0.04)',
+                        'premium-hover': '0 20px 60px rgba(139, 92, 246, 0.15)', 
+                        'glow': '0 0 20px rgba(139, 92, 246, 0.4)', 
+                    },
+                    animation: {
+                        'blob': 'blob 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-up': 'fadeUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        },
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Global Styles */
+        body {
+            background: linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .dark body {
+            background: #0B1220;
+        }
+
+        /* Glassmorphism */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        .dark .glass-nav {
+            background: rgba(11, 18, 32, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-btn-primary {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dark .glass-btn-primary {
+             background: rgba(11, 18, 32, 0.4);
+             border: 1px solid rgba(139, 92, 246, 0.5);
+        }
+        .glass-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            z-index: -1;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .glass-btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.6);
+        }
+        .glass-btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        /* Text Gradients */
+        .gradient-text-main {
+            background: linear-gradient(135deg, #0B1220 30%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dark .gradient-text-main {
+             background: linear-gradient(135deg, #FFFFFF 30%, #8B5CF6 100%);
+        }
+        .gradient-text-accent {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Background Blobs */
+        .blob-bg {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.15;
+            border-radius: 50%;
+        }
+
+        /* Flip Cards */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 340px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 1rem;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+        }
+        .flip-card-front {
+            background-color: #FFFFFF;
+        }
+        .dark .flip-card-front {
+            background-color: #111827;
+            border-color: #374151;
+        }
+        .flip-card-back {
+            background: #0B1220;
+            color: white;
+            transform: rotateY(180deg);
+            border: 1px solid #1F2937;
+        }
+        .dark .flip-card-back {
+            background: #000000;
+        }
+
+        /* Glowing Effects */
+        .glow-effect {
+            --blur: 0px;
+            --spread: 80;
+            --start: 0;
+            --active: 0;
+            --border-width: 3px;
+            --gradient: radial-gradient(circle, #8B5CF6 10%, #8B5CF600 20%),
+                        radial-gradient(circle at 40% 40%, #3B82F6 5%, #3B82F600 15%),
+                        radial-gradient(circle at 60% 60%, #D8B4FE 10%, #D8B4FE00 20%), 
+                        radial-gradient(circle at 40% 60%, #8B5CF6 10%, #8B5CF600 20%),
+                        repeating-conic-gradient(
+                        from 236.84deg at 50% 50%,
+                        #8B5CF6 0%,
+                        #3B82F6 calc(25% / 5),
+                        #D8B4FE calc(50% / 5), 
+                        #3B82F6 calc(75% / 5),
+                        #8B5CF6 calc(100% / 5)
+                        );
+        }
+        .glow-container {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .glow-border {
+            position: absolute;
+            inset: calc(-1 * var(--border-width));
+            border-radius: inherit;
+            border: var(--border-width) solid transparent;
+            background: var(--gradient);
+            background-attachment: fixed;
+            mask: linear-gradient(#0000, #0000),
+                conic-gradient(
+                    from calc((var(--start) - var(--spread)) * 1deg),
+                    #00000000 0deg,
+                    #fff,
+                    #00000000 calc(var(--spread) * 2deg)
+                );
+            mask-composite: intersect;
+            mask-clip: padding-box, border-box;
+            opacity: var(--active);
+            transition: opacity 0.3s;
+        }
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Modal */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.3s ease-in-out;
+        }
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Markdown Styling */
+        .prose strong { color: #8B5CF6; font-weight: 700; }
+        .prose ul { list-style-type: disc; padding-left: 1.5em; margin: 0.5em 0; }
+        .prose h3 { font-size: 1.1em; font-weight: 700; margin-top: 1em; margin-bottom: 0.5em; color: #0B1220; }
+        .dark .prose h3 { color: #F3F4F6; }
+        .dark .prose p, .dark .prose li { color: #D1D5DB; }
+    </style>
+</head>
+<body class="text-brand-ink dark:text-gray-100 font-sans antialiased overflow-x-hidden selection:bg-brand-teal selection:text-white dark:bg-brand-ink transition-all duration-300">
+
+    <!-- Announcement Bar -->
+    <div id="announcement-bar" class="fixed top-0 left-0 w-full h-10 bg-gradient-to-r from-brand-teal to-brand-blue z-[60] flex items-center justify-center text-white text-xs font-bold tracking-wide shadow-md transition-transform duration-300 -translate-y-full">
+        <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+            <span>New: Get a Free Operations Check for your business.</span>
+            <a href="#contact" class="underline underline-offset-2 hover:text-white/80 transition-colors ml-1">Claim Now &rarr;</a>
+        </div>
+        <button onclick="closeAnnouncement()" class="absolute right-4 text-white/80 hover:text-white">
+            <i class="ph-bold ph-x text-sm"></i>
+        </button>
+    </div>
+
+    <!-- Floating Brand Logo (Top Left) -->
+    <div id="brand-logo" class="fixed top-6 left-4 md:left-8 z-50 cursor-pointer group transition-all duration-300" onclick="window.scrollTo(0,0)">
+        <div class="flex items-center gap-3">
+            <!-- Image Logo: Points specifically to the uploaded file -->
+            <img src="autum8_favicon.jpg" 
+                 alt="AUTUM8" 
+                 class="w-10 h-10 rounded-xl shadow-xl shadow-brand-teal/10 group-hover:scale-105 transition-transform duration-300 object-cover">
+            
+            <span class="hidden lg:block font-bold text-xl text-brand-ink dark:text-white tracking-tight drop-shadow-sm">AUTUM<span class="text-brand-teal">8</span></span>
+        </div>
+    </div>
+
+    <!-- Tubelight Navbar (Center) -->
+    <nav id="main-nav" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-[95vw] transition-all duration-300">
+        <div class="flex items-center gap-1 bg-white/90 dark:bg-brand-ink/90 border border-white/40 dark:border-white/10 backdrop-blur-xl py-1.5 px-1.5 rounded-full shadow-xl shadow-brand-teal/5 relative overflow-hidden md:overflow-visible transition-colors duration-300">
+            
+            <!-- The Moving Lamp (Active State Background) -->
+            <div id="nav-lamp" class="absolute inset-y-1.5 bg-brand-gray-1 dark:bg-white/10 rounded-full -z-10 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] opacity-0">
+                <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-brand-teal rounded-t-full"></div>
+                <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-6 bg-brand-teal/20 rounded-full blur-md"></div>
+            </div>
+
+            <!-- Nav Items -->
+            <a href="#" onclick="window.scrollTo(0,0); setActiveNav(this); return false;" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="home">
+                <span class="hidden md:inline">Home</span>
+                <i class="ph-bold ph-house md:hidden text-lg"></i>
+            </a>
+            
+            <a href="#about" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="about">
+                <span class="hidden md:inline">About</span>
+                <i class="ph-bold ph-user md:hidden text-lg"></i>
+            </a>
+
+            <a href="#pillars" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="pillars">
+                <span class="hidden md:inline">Pillars</span>
+                <i class="ph-bold ph-columns md:hidden text-lg"></i>
+            </a>
+
+            <a href="#services" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="services">
+                <span class="hidden md:inline">Models</span>
+                <i class="ph-bold ph-handshake md:hidden text-lg"></i>
+            </a>
+
+            <a href="#pricing" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="pricing">
+                <span class="hidden md:inline">Pricing</span>
+                <i class="ph-bold ph-currency-dollar md:hidden text-lg"></i>
+            </a>
+
+            <div class="w-px h-6 bg-brand-gray-2 dark:bg-white/10 mx-1 hidden md:block"></div>
+
+            <a href="#contact" class="relative cursor-pointer text-sm font-bold px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-teal to-brand-blue text-white shadow-lg shadow-brand-teal/20 hover:shadow-brand-teal/40 hover:scale-105 transition-all flex items-center gap-2 group whitespace-nowrap">
+                <span class="hidden md:inline">Get in Touch</span>
+                <span class="md:hidden">Contact</span>
+                <i class="ph-bold ph-arrow-right text-lg group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-24 lg:pt-48 lg:pb-36 overflow-hidden">
+        <div class="blob-bg bg-brand-teal w-[500px] h-[500px] top-[-100px] left-[-100px] animate-blob dark:opacity-[0.08]"></div>
+        <div class="blob-bg bg-brand-blue w-[600px] h-[600px] top-[100px] right-[-200px] animate-blob animation-delay-2000 dark:opacity-[0.08]"></div>
+        <div class="blob-bg bg-brand-purple w-[400px] h-[400px] bottom-[-100px] left-[20%] animate-blob animation-delay-4000 dark:opacity-[0.08]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/50 dark:bg-brand-ink/50 border border-brand-teal/20 backdrop-blur-sm text-brand-ink dark:text-gray-200 text-xs font-semibold tracking-wider mb-8 shadow-sm hover:shadow-md transition-shadow animate-fade-up">
+                <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+                SYSTEMS INTELLIGENCE
+            </div>
+            
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-brand-ink dark:text-white tracking-tight leading-[1.15] mb-6 animate-fade-up" style="animation-delay: 0.1s;">
+                The Intelligence Layer <br>
+                <span id="hero-text-rotator" class="gradient-text-accent inline-block transition-all duration-500 transform translate-y-0 opacity-100 pb-2">Behind Your Business.</span>
+            </h1>
+            
+            <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl font-medium text-brand-muted dark:text-gray-400 leading-relaxed animate-fade-up" style="animation-delay: 0.2s;">
+                Autum8 brings clarity, reliability, and intelligence to your operations — flows, data, documentation, and insights.
+            </p>
+
+            <p class="mt-4 text-brand-muted/70 dark:text-gray-500 text-sm font-medium animate-fade-up" style="animation-delay: 0.3s;">
+                Smarter systems. Cleaner data. Confident decisions.
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-5 animate-fade-up" style="animation-delay: 0.4s;">
+                <button onclick="toggleAIModal()" class="glass-btn-primary px-8 py-4 rounded-xl text-brand-ink dark:text-white font-bold shadow-lg flex items-center justify-center gap-2 group ring-2 ring-brand-teal/20">
+                    <span class="text-lg">✨</span> Run AI Diagnosis
+                    <i class="ph-bold ph-lightning group-hover:text-brand-teal transition-colors"></i>
+                </button>
+                
+                <a href="#services" class="px-8 py-4 rounded-xl text-brand-muted dark:text-gray-300 font-semibold border border-transparent hover:border-brand-gray-2 dark:hover:border-gray-700 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all flex items-center justify-center hover:-translate-y-1 duration-300">
+                    Explore Services
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Value Prop -->
+    <section class="py-20 bg-white/50 dark:bg-brand-ink/50 backdrop-blur-sm border-y border-brand-gray-2/50 dark:border-white/5">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl md:text-3xl font-medium text-brand-ink dark:text-white leading-relaxed">
+                Modern businesses don’t fail because of bad marketing or weak products.
+                <span class="block mt-4 text-brand-muted dark:text-gray-400">They fail because their <span class="text-brand-teal font-semibold">operations are broken</span> — scattered tools, unreliable automations, messy data, vague processes, and no decision clarity.</span>
+            </h2>
+            <div class="mt-10 flex justify-center">
+                <div class="w-16 h-1 bg-gradient-to-r from-brand-teal to-brand-blue rounded-full"></div>
+            </div>
+            <div class="mt-6">
+                <p class="text-lg font-medium text-brand-ink dark:text-gray-200">Autum8 brings intelligence, structure, and reliability to your operations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-ink dark:text-white mb-6 tracking-tight">Built for founders who want their systems to <span class="gradient-text-accent">“just work.”</span></h2>
+                    <p class="text-brand-muted dark:text-gray-400 text-lg mb-6 leading-relaxed">
+                        Most businesses grow faster than their internal systems can handle. Tools multiply, automations fail silently, data becomes messy, and teams rely on tribal knowledge instead of clear processes.
+                    </p>
+                    <div class="p-6 bg-brand-gray-1 dark:bg-gray-800/50 rounded-2xl border border-brand-gray-2 dark:border-gray-700">
+                        <p class="text-brand-ink dark:text-gray-200 font-semibold text-lg">
+                            Autum8 solves that. We unify your operations across five pillars: flows, documentation, data, research, and systems.
+                        </p>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <div class="bg-white dark:bg-brand-darkcard p-8 rounded-3xl shadow-premium border border-brand-gray-2/50 dark:border-gray-700 relative z-10 hover:-translate-y-2 transition-transform duration-500">
+                        <div class="flex items-center justify-between mb-8 pb-8 border-b border-brand-gray-2 dark:border-gray-700 opacity-40 grayscale">
+                            <div class="space-y-3">
+                                <div class="h-2 w-24 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                                <div class="h-2 w-16 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                            </div>
+                            <i class="ph ph-shuffle text-3xl text-gray-400 dark:text-gray-500"></i>
+                            <div class="space-y-3">
+                                <div class="h-2 w-20 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                                <div class="h-2 w-28 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="h-12 w-12 rounded-full bg-brand-teal/10 flex items-center justify-center text-brand-teal animate-bounce">
+                                <i class="ph-fill ph-arrow-down text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="bg-gradient-to-r from-brand-gray-1 to-white dark:from-gray-800 dark:to-brand-darkcard border border-brand-teal/20 p-5 rounded-xl w-full shadow-sm">
+                                <div class="flex items-center gap-3 text-brand-ink dark:text-gray-200 font-mono text-sm">
+                                    <div class="w-5 h-5 rounded-full bg-brand-teal/20 flex items-center justify-center text-brand-teal text-xs">
+                                        <i class="ph-bold ph-check"></i>
+                                    </div>
+                                    <span class="font-semibold">System_Optimized</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-brand-teal/20 to-brand-blue/20 blur-3xl -z-10 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pillars -->
+    <section id="pillars" class="py-24 bg-brand-gray-1 dark:bg-brand-ink border-t border-brand-gray-2/50 dark:border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-3 py-1 rounded-full bg-white dark:bg-gray-800 border border-brand-gray-2 dark:border-gray-700 text-brand-teal text-xs font-bold tracking-widest uppercase mb-4 shadow-sm">The Ecosystem</span>
+                <h3 class="text-3xl md:text-4xl font-bold text-brand-ink dark:text-white">The 6 Pillars of Operational Intelligence</h3>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards -->
+                <div class="group bg-white dark:bg-brand-darkcard p-8 rounded-2xl shadow-premium border border-transparent hover:border-brand-blue/30 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-premium-hover duration-300 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-brand-blue mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-arrows-merge text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Flow Intelligence</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 leading-relaxed">Automations engineered for clarity, stability, and scale.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-blue hover:text-brand-teal transition-colors group-hover:gap-3 duration-300">
+                            Explore <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-white dark:bg-brand-darkcard p-8 rounded-2xl shadow-premium border border-transparent hover:border-brand-purple/30 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-premium-hover duration-300 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center text-brand-purple mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-book-open-text text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Documentation</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 leading-relaxed">Clean SOPs and AI-driven knowledge hubs.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-purple hover:text-brand-teal transition-colors group-hover:gap-3 duration-300">
+                            Explore <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group bg-white dark:bg-brand-darkcard p-8 rounded-2xl shadow-premium border border-transparent hover:border-brand-teal/30 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-premium-hover duration-300 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="w-12 h-12 bg-teal-50 dark:bg-teal-900/20 rounded-xl flex items-center justify-center text-brand-teal mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-database text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Data Intelligence</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 leading-relaxed">Clean, structured, reliable data. Decisions based on truth.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-teal hover:text-brand-blue transition-colors group-hover:gap-3 duration-300">
+                            Explore <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                 <div class="group bg-white dark:bg-brand-darkcard p-8 rounded-2xl shadow-premium border border-transparent hover:border-amber-400/30 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-premium-hover duration-300 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 rounded-xl flex items-center justify-center text-amber-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-magnifying-glass text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Research</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 leading-relaxed">AI-powered insights, competitor analysis & market maps.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-amber-500 hover:text-brand-teal transition-colors group-hover:gap-3 duration-300">
+                            Explore <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="group bg-white dark:bg-brand-darkcard p-8 rounded-2xl shadow-premium border border-transparent hover:border-rose-400/30 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-premium-hover duration-300 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="w-12 h-12 bg-rose-50 dark:bg-rose-900/20 rounded-xl flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-circuitry text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Systems Audit</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 leading-relaxed">Comprehensive review of your entire tech stack.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-rose-500 hover:text-brand-teal transition-colors group-hover:gap-3 duration-300">
+                            Explore <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                 <div class="group bg-white dark:bg-brand-darkcard p-8 rounded-2xl shadow-premium border border-transparent hover:border-slate-400/30 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-premium-hover duration-300 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-wrench text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Fix & Stabilize</h4>
+                        <p class="text-brand-muted dark:text-gray-400 text-sm mb-6 leading-relaxed">Emergency repair for broken automations.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-brand-teal transition-colors group-hover:gap-3 duration-300">
+                            Explore <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview (Models) -->
+    <section id="services" class="py-24 bg-white dark:bg-brand-ink relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block px-3 py-1 rounded-full bg-brand-gray-1 dark:bg-gray-800 border border-brand-gray-2 dark:border-gray-700 text-brand-muted dark:text-gray-400 text-xs font-bold tracking-widest uppercase mb-4 shadow-sm">Engagement Models</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-ink dark:text-white mb-4 tracking-tight">How we work with you.</h2>
+                <p class="text-brand-muted dark:text-gray-400">Choose the engagement that fits your operational needs. Hover to reveal details.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Flip Cards -->
+                <div class="flip-card group">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <i class="ph-fill ph-clipboard-text text-3xl text-brand-teal"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Deep Dive Audit</h3>
+                            <p class="text-sm text-brand-muted dark:text-gray-400 text-center leading-relaxed">The starting point. We uncover exactly where your business is breaking.</p>
+                            <span class="mt-6 text-[10px] font-bold uppercase tracking-widest text-brand-teal/60">Hover to Flip</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3 class="text-lg font-bold text-white mb-4">Diagnostics</h3>
+                            <ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span> Full stack review</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span> Bottleneck identification</li>
+                            </ul>
+                            <a href="#contact" class="w-full py-2.5 block text-center rounded-lg bg-brand-teal text-white font-bold text-sm hover:bg-white hover:text-brand-ink transition-colors">Book Audit</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card group">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <i class="ph-fill ph-stack text-3xl text-brand-blue"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Custom Builds</h3>
+                            <p class="text-sm text-brand-muted dark:text-gray-400 text-center leading-relaxed">Project-based execution for new flows, data cleanup, or documentation.</p>
+                            <span class="mt-6 text-[10px] font-bold uppercase tracking-widest text-brand-blue/60">Hover to Flip</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3 class="text-lg font-bold text-white mb-4">Project Scope</h3>
+                            <ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> End-to-end automation</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> CRM Data migration</li>
+                            </ul>
+                            <a href="#contact" class="w-full py-2.5 block text-center rounded-lg bg-brand-blue text-white font-bold text-sm hover:bg-white hover:text-brand-ink transition-colors">Start Project</a>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="flip-card group">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <i class="ph-fill ph-siren text-3xl text-rose-500"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Urgent Repair</h3>
+                            <p class="text-sm text-brand-muted dark:text-gray-400 text-center leading-relaxed">Emergency stabilization when your critical systems go down.</p>
+                            <span class="mt-6 text-[10px] font-bold uppercase tracking-widest text-rose-500/60">Hover to Flip</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3 class="text-lg font-bold text-white mb-4">Fast Response</h3>
+                            <ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Same-day triage</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Zapier/Make recovery</li>
+                            </ul>
+                            <a href="#contact" class="w-full py-2.5 block text-center rounded-lg bg-rose-500 text-white font-bold text-sm hover:bg-white hover:text-brand-ink transition-colors">Fix It Now</a>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="flip-card group">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-br from-brand-gray-1 to-white dark:from-gray-800 dark:to-gray-900">
+                            <div class="w-16 h-16 bg-white dark:bg-gray-700 rounded-2xl shadow-sm flex items-center justify-center text-brand-ink dark:text-white mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <i class="ph-fill ph-infinity text-3xl text-brand-purple"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Fractional Ops</h3>
+                            <p class="text-sm text-brand-muted dark:text-gray-400 text-center leading-relaxed">Your dedicated operations team on a monthly retainer.</p>
+                            <span class="mt-6 text-[10px] font-bold uppercase tracking-widest text-brand-purple/60">Hover to Flip</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3 class="text-lg font-bold text-white mb-4">Partnership</h3>
+                            <ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span> Monthly maintenance</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span> Priority access</li>
+                            </ul>
+                            <a href="#contact" class="w-full py-2.5 block text-center rounded-lg bg-brand-purple text-white font-bold text-sm hover:bg-white hover:text-brand-ink transition-colors">View Plans</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-24 bg-brand-gray-1 dark:bg-brand-ink border-t border-brand-gray-2/50 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-brand-ink dark:text-white">Transparent, predictable pricing.</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 rounded-2xl bg-white dark:bg-brand-darkcard border border-brand-gray-2 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <h3 class="text-lg font-bold text-brand-ink dark:text-white">Quick Fix</h3>
+                        <div class="text-3xl font-mono font-bold text-brand-teal my-4">$99</div>
+                        <p class="text-sm text-brand-muted dark:text-gray-400 mb-8 h-10">For single automation or data issues.</p>
+                        <a href="#contact" class="block w-full text-center py-2.5 rounded-lg border border-brand-gray-2 dark:border-gray-700 text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal text-sm font-semibold transition-colors">Select</a>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-white dark:bg-brand-darkcard border border-brand-gray-2 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <h3 class="text-lg font-bold text-brand-ink dark:text-white">Single Service</h3>
+                        <div class="text-3xl font-mono font-bold text-brand-teal my-4">$199+</div>
+                        <p class="text-sm text-brand-muted dark:text-gray-400 mb-8 h-10">Research, documentation, or flow fix.</p>
+                        <a href="#contact" class="block w-full text-center py-2.5 rounded-lg border border-brand-gray-2 dark:border-gray-700 text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal text-sm font-semibold transition-colors">Select</a>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-white dark:bg-brand-darkcard border-2 border-brand-teal relative transform md:-translate-y-4 shadow-xl shadow-brand-teal/10 relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <div class="absolute top-0 right-0 bg-brand-teal text-white text-[10px] uppercase font-bold px-2 py-1 rounded-bl-lg">Popular</div>
+                        <h3 class="text-lg font-bold text-brand-ink dark:text-white">Ops Intelligence</h3>
+                        <div class="text-3xl font-mono font-bold text-brand-teal my-4">$599+</div>
+                        <p class="text-sm text-brand-muted dark:text-gray-400 mb-8 h-10">Multi-service optimization for teams.</p>
+                        <a href="#contact" class="block w-full text-center py-2.5 rounded-lg bg-gradient-to-r from-brand-teal to-brand-blue text-white font-bold text-sm shadow-md hover:shadow-lg transition-all hover:scale-105">Select</a>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-white dark:bg-brand-darkcard border border-brand-gray-2 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden glow-effect">
+                    <div class="glow-container"><div class="glow-border"></div></div>
+                    <div class="card-content">
+                        <h3 class="text-lg font-bold text-brand-ink dark:text-white">Monthly Support</h3>
+                        <div class="text-3xl font-mono font-bold text-brand-teal my-4">$299<span class="text-sm text-brand-muted dark:text-gray-400 font-sans font-normal">/mo</span></div>
+                        <p class="text-sm text-brand-muted dark:text-gray-400 mb-8 h-10">Continuous improvements & maintenance.</p>
+                        <a href="#contact" class="block w-full text-center py-2.5 rounded-lg border border-brand-gray-2 dark:border-gray-700 text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal text-sm font-semibold transition-colors">Select</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="contact" class="py-24 relative overflow-hidden bg-brand-ink dark:bg-black">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] rounded-full bg-brand-blue/10 blur-3xl"></div>
+            <div class="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] rounded-full bg-brand-teal/10 blur-3xl"></div>
+        </div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">Your operations should be your competitive advantage.</h2>
+            <p class="text-xl text-brand-muted dark:text-gray-400 mb-12">Not your bottleneck. Let’s fix, streamline, and optimize the digital brain of your business.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-5">
+                <a href="mailto:hello@autum8.co" class="glass-btn-primary px-8 py-4 rounded-xl text-brand-ink dark:text-white font-bold shadow-glow text-lg bg-white dark:bg-brand-darkcard hover:bg-white/90">
+                    Get a Free Operations Check
+                </a>
+                <a href="mailto:hello@autum8.co" class="px-8 py-4 rounded-xl bg-transparent text-white border border-white/20 font-semibold hover:bg-white/10 transition-all text-lg hover:-translate-y-1">
+                    Book a 15-Minute Call
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-brand-ink pt-20 pb-10 border-t border-gray-100 dark:border-gray-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Newsletter -->
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-brand-ink dark:text-white tracking-tight">Stay<br>Connected</h3>
+                    <p class="text-brand-muted dark:text-gray-400 text-sm leading-relaxed">
+                        Join our newsletter for the latest updates and exclusive offers.
+                    </p>
+                    <div class="relative max-w-xs">
+                        <input type="email" placeholder="Enter your email" class="w-full py-3 pl-4 pr-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-brand-ink dark:text-white text-sm focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition-all">
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-brand-ink dark:bg-brand-teal rounded-md flex items-center justify-center text-white hover:bg-brand-teal dark:hover:bg-brand-blue transition-colors">
+                            <i class="ph-bold ph-paper-plane-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-lg font-bold text-brand-ink dark:text-white mb-6">Quick Links</h4>
+                    <ul class="space-y-4 text-brand-muted dark:text-gray-400 text-sm font-medium">
+                        <li><a href="#" class="hover:text-brand-teal transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-brand-teal transition-colors">About Us</a></li>
+                        <li><a href="#services" class="hover:text-brand-teal transition-colors">Services</a></li>
+                        <li><a href="#products" class="hover:text-brand-teal transition-colors">Products</a></li>
+                        <li><a href="#contact" class="hover:text-brand-teal transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-bold text-brand-ink dark:text-white mb-6">Contact Us</h4>
+                    <ul class="space-y-4 text-brand-muted dark:text-gray-400 text-sm">
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand-ink dark:text-gray-200">123 Innovation Street</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand-ink dark:text-gray-200">Tech City, TC 12345</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span>Phone:</span>
+                            <span class="text-brand-ink dark:text-gray-200">(123) 456-7890</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span>Email:</span>
+                            <a href="mailto:hello@autum8.co" class="text-brand-ink dark:text-gray-200 hover:text-brand-teal">hello@autum8.co</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Follow & Toggle -->
+                <div>
+                    <h4 class="text-lg font-bold text-brand-ink dark:text-white mb-6">Follow Us</h4>
+                    <div class="flex gap-4 mb-8">
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal transition-colors">
+                            <i class="ph-fill ph-facebook-logo text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal transition-colors">
+                            <i class="ph-fill ph-twitter-logo text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal transition-colors">
+                            <i class="ph-fill ph-instagram-logo text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-brand-ink dark:text-white hover:border-brand-teal hover:text-brand-teal transition-colors">
+                            <i class="ph-fill ph-linkedin-logo text-lg"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <i class="ph-bold ph-sun text-xl text-brand-muted dark:text-gray-500"></i>
+                        <div onclick="toggleTheme()" class="w-12 h-6 bg-brand-ink dark:bg-brand-teal rounded-full relative cursor-pointer transition-colors duration-300">
+                            <div id="theme-toggle-circle" class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 dark:translate-x-6"></div>
+                        </div>
+                        <i class="ph-bold ph-moon text-xl text-brand-ink dark:text-white"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-muted dark:text-gray-500">
+                <p>&copy; 2024 Autum8 Intelligence. All rights reserved.</p>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-brand-ink dark:hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-ink dark:hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-brand-ink dark:hover:text-white transition-colors">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Modal -->
+    <div id="ai-modal" class="modal fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-brand-ink/40 dark:bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleAIModal()"></div>
+        <div class="modal-content relative bg-white dark:bg-brand-darkcard rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+            <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-brand-gray-1 to-white dark:from-gray-800 dark:to-brand-darkcard">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-teal/10 flex items-center justify-center text-brand-teal">
+                        <i class="ph-fill ph-robot text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-brand-ink dark:text-white text-lg">AI Ops Scanner</h3>
+                        <p class="text-xs text-brand-muted dark:text-gray-400">Powered by our Nex8 AI</p>
+                    </div>
+                </div>
+                <button onclick="toggleAIModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center text-gray-400 transition-colors">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1 bg-white dark:bg-brand-darkcard">
+                <p class="text-sm text-brand-muted dark:text-gray-400 mb-4">Describe an operational bottleneck (e.g., "My leads aren't syncing to Slack" or "I spend 5 hours a week manually copying data").</p>
+                <textarea id="ai-input" class="w-full h-32 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-brand-ink dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal/20 focus:border-brand-teal transition-all resize-none" placeholder="Describe your workflow issue here..."></textarea>
+                <div id="ai-result" class="hidden mt-6 p-5 rounded-xl bg-brand-gray-1 dark:bg-gray-800 border border-brand-teal/10 prose prose-sm max-w-none prose-p:text-brand-ink dark:prose-p:text-gray-200 prose-headings:text-brand-ink dark:prose-headings:text-white animate-fade-up"></div>
+            </div>
+            <div class="p-6 border-t border-gray-100 dark:border-gray-700 bg-white dark:bg-brand-darkcard flex justify-end items-center gap-3">
+                <button onclick="toggleAIModal()" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-brand-muted dark:text-gray-400 hover:text-brand-ink dark:hover:text-white transition-colors">Cancel</button>
+                <button onclick="runDiagnosis()" id="analyze-btn" class="px-6 py-2.5 rounded-lg bg-brand-ink dark:bg-brand-teal text-white text-sm font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+                    <i class="ph-bold ph-magic-wand"></i> Analyze
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Announcement Bar Logic
+        const announcementBar = document.getElementById('announcement-bar');
+        const mainNav = document.getElementById('main-nav');
+        const brandLogo = document.getElementById('brand-logo');
+
+        function showAnnouncement() {
+            try {
+                if (localStorage.getItem('announcementClosed') === 'true') return;
+            } catch (e) { console.log('LocalStorage blocked'); }
+            
+            if(announcementBar) announcementBar.classList.remove('-translate-y-full');
+            if(mainNav) { mainNav.classList.remove('top-6'); mainNav.classList.add('top-16'); }
+            if(brandLogo) { brandLogo.classList.remove('top-6'); brandLogo.classList.add('top-16'); }
+        }
+
+        function closeAnnouncement() {
+            if(announcementBar) announcementBar.classList.add('-translate-y-full');
+            if(mainNav) { mainNav.classList.remove('top-16'); mainNav.classList.add('top-6'); }
+            if(brandLogo) { brandLogo.classList.remove('top-16'); brandLogo.classList.add('top-6'); }
+            try {
+                localStorage.setItem('announcementClosed', 'true');
+            } catch (e) {}
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(showAnnouncement, 500);
+        });
+
+        // Dark Mode
+        function toggleTheme() {
+            try {
+                const html = document.documentElement;
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            } catch(e) {}
+        }
+        
+        try {
+            // Initialize Theme: Default to Light Mode
+            if (localStorage.theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        } catch(e) {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Gemini AI
+        const apiKey = ""; // Insert API Key Here
+        function toggleAIModal() {
+            const modal = document.getElementById('ai-modal');
+            modal.classList.toggle('active');
+            if(modal.classList.contains('active')) document.getElementById('ai-input').focus();
+        }
+        async function runDiagnosis() {
+            const input = document.getElementById('ai-input').value;
+            const resultDiv = document.getElementById('ai-result');
+            const btn = document.getElementById('analyze-btn');
+            if (!input.trim()) { alert("Please describe an issue first."); return; }
+            if (!apiKey) { alert("Please add a valid Google Gemini API key to the code to use this feature."); return; }
+            
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Analyzing...';
+            btn.disabled = true;
+            resultDiv.classList.add('hidden');
+            resultDiv.innerHTML = '';
+            
+            const prompt = `You are an expert Operations Consultant for Autum8. Analyze: "${input}". Output Markdown: ### 🔍 Diagnosis... ### 🛠️ Recommended Fix... ### 🚀 Autum8 Pillar...`;
+            
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                if (!response.ok) throw new Error('API Error');
+                const data = await response.json();
+                const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error.";
+                resultDiv.innerHTML = marked.parse(rawText);
+                resultDiv.classList.remove('hidden');
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="text-red-500 font-bold">Error: ${error.message}</p>`;
+                resultDiv.classList.remove('hidden');
+            } finally {
+                btn.innerHTML = '<i class="ph-bold ph-magic-wand"></i> Analyze';
+                btn.disabled = false;
+            }
+        }
+
+        // Navigation
+        const navLamp = document.getElementById('nav-lamp');
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = ['about', 'pillars', 'services', 'pricing', 'contact'];
+        let isManualScroll = false;
+        let scrollTimer;
+
+        function setActiveNav(element) {
+            if (!element) return;
+            navItems.forEach(item => { item.classList.remove('text-brand-teal'); item.classList.add('text-brand-muted'); });
+            element.classList.remove('text-brand-muted'); element.classList.add('text-brand-teal');
+            const navRect = element.parentElement.getBoundingClientRect();
+            const itemRect = element.getBoundingClientRect();
+            if(navLamp) {
+                navLamp.style.left = `${itemRect.left - navRect.left}px`;
+                navLamp.style.width = `${itemRect.width}px`;
+                navLamp.style.opacity = '1';
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const firstItem = document.querySelector('.nav-item');
+            if(firstItem) setActiveNav(firstItem);
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    isManualScroll = true;
+                    clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => { isManualScroll = false; }, 1000); 
+                });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (isManualScroll) return;
+            let current = '';
+            sections.forEach(section => {
+                const sectionEl = document.getElementById(section);
+                if (sectionEl && scrollY >= sectionEl.offsetTop - 200) current = section;
+            });
+            if (current) {
+                const activeLink = document.querySelector(`.nav-item[data-target="${current}"]`);
+                if (activeLink) setActiveNav(activeLink);
+            } else if (scrollY < 100) {
+                const homeLink = document.querySelector(`.nav-item[data-target="home"]`);
+                if (homeLink) setActiveNav(homeLink);
+            }
+        });
+
+        // Text Rotator
+        const textRotator = document.getElementById('hero-text-rotator');
+        const phrases = ["Behind Your Business.", "Scaling Your Operations.", "Driving Your Growth.", "Powering Decisions."];
+        let phraseIndex = 0;
+        if (textRotator) {
+            setInterval(() => {
+                textRotator.style.opacity = '0'; textRotator.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    textRotator.textContent = phrases[phraseIndex];
+                    textRotator.style.opacity = '1'; textRotator.style.transform = 'translateY(0)';
+                }, 500);
+            }, 3500);
+        }
+
+        // Glow
+        (function() {
+            const glowCards = document.querySelectorAll('.glow-effect');
+            const handleMove = (e) => {
+                const mouseX = e.clientX; const mouseY = e.clientY;
+                glowCards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const cardCenterX = rect.left + rect.width / 2;
+                    const cardCenterY = rect.top + rect.height / 2;
+                    const distanceFromCenter = Math.hypot(mouseX - cardCenterX, mouseY - cardCenterY);
+                    const inactiveRadius = Math.min(rect.width, rect.height) * 0.1 * 0.5;
+                    let isActive = mouseX > rect.left - 400 && mouseX < rect.right + 400 && mouseY > rect.top - 400 && mouseY < rect.bottom + 400;
+                    if (distanceFromCenter < inactiveRadius) isActive = false;
+                    card.style.setProperty('--active', isActive ? '1' : '0');
+                    if (isActive) card.style.setProperty('--start', (Math.atan2(mouseY - cardCenterY, mouseX - cardCenterX) * 180 / Math.PI) + 90);
+                });
+            };
+            let ticking = false;
+            window.addEventListener('mousemove', (e) => {
+                if (!ticking) { window.requestAnimationFrame(() => { handleMove(e); ticking = false; }); ticking = true; }
+            });
+        })();
+    </script>
+</body>
+</html>
