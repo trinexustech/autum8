@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>autum8 — Digital Operations Intelligence</title>
-    <!-- Updated Favicon -->
-    <link rel="icon" type="image/png" href="autum8_logo.png">
+    <link rel="icon" type="image/jpeg" href="autum8_favicon.jpg">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,9 +31,9 @@
                     },
                     colors: {
                         brand: {
-                            teal: '#8B5CF6',  // Violet Primary
-                            blue: '#3B82F6',  // Blue Secondary
-                            purple: '#D8B4FE', // Lavender Accent
+                            teal: '#0EA5A4',  // Original Teal
+                            blue: '#60A5FA',  // Original Blue
+                            purple: '#A78BFA', // Original Purple
                             ink: '#0B1220',   // Midnight Ink
                             gray: { 1: '#F7F9FC', 2: '#E5E7EB' },
                             muted: '#6B7280', 
@@ -49,15 +48,15 @@
                     },
                     boxShadow: {
                         'premium': '0 10px 40px rgba(0,0,0,0.04)',
-                        'premium-hover': '0 20px 60px rgba(139, 92, 246, 0.15)', 
-                        'glow': '0 0 20px rgba(139, 92, 246, 0.4)', 
+                        'premium-hover': '0 20px 60px rgba(14, 165, 164, 0.1)',
+                        'glow': '0 0 20px rgba(14, 165, 164, 0.3)',
                         'holiday-glow': '0 0 25px rgba(220, 38, 38, 0.3)', 
                     },
                     animation: {
                         'blob': 'blob 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
                         'fade-up': 'fadeUp 0.8s ease-out forwards',
                         'scroll': 'scroll 40s linear infinite',
-                        'flow': 'flowAnimation 3s linear infinite',
+                        'bounce-slow': 'bounce 3s infinite',
                     },
                     keyframes: {
                         blob: {
@@ -73,10 +72,6 @@
                         scroll: {
                             '0%': { transform: 'translateX(0)' },
                             '100%': { transform: 'translateX(-100%)' },
-                        },
-                        flowAnimation: {
-                            '0%': { strokeDashoffset: '24' },
-                            '100%': { strokeDashoffset: '0' }
                         }
                     }
                 }
@@ -93,7 +88,7 @@
         }
         .dark body { background: #0B1220; }
 
-        /* Glassmorphism */
+        /* Glassmorphism Utilities */
         .glass-nav {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
@@ -104,25 +99,68 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+        }
+        .dark .glass-card {
+             background: rgba(17, 24, 39, 0.6);
+             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .glass-btn-primary {
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(14, 165, 164, 0.2);
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .dark .glass-btn-primary {
              background: rgba(11, 18, 32, 0.4);
-             border: 1px solid rgba(139, 92, 246, 0.5);
+             border: 1px solid rgba(14, 165, 164, 0.4);
         }
-        .glass-btn-primary:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.4);
-            border-color: rgba(139, 92, 246, 0.6);
+        
+        .glass-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(14, 165, 164, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+            z-index: -1;
+            opacity: 0.5;
+            transition: opacity 0.3s;
         }
 
-        /* Background Blobs */
+        .glass-btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px -10px rgba(14, 165, 164, 0.3);
+            border-color: rgba(14, 165, 164, 0.4);
+        }
+        
+        .glass-btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        /* Text Gradient */
+        .gradient-text-main {
+            background: linear-gradient(135deg, #0B1220 30%, #0EA5A4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dark .gradient-text-main {
+             background: linear-gradient(135deg, #FFFFFF 30%, #0EA5A4 100%);
+        }
+        
+        .gradient-text-accent {
+            background: linear-gradient(135deg, #0EA5A4 0%, #60A5FA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Blobs */
         .blob-bg {
             position: absolute;
             filter: blur(80px);
@@ -131,28 +169,43 @@
             border-radius: 50%;
         }
 
-        /* Flip Cards */
-        .flip-card { background-color: transparent; perspective: 1000px; height: 340px; }
-        .flip-card-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d; border-radius: 1rem;
+        /* 3D Flip Card Styles */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 340px;
         }
-        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 1rem;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
         .flip-card-front, .flip-card-back {
-            position: absolute; width: 100%; height: 100%;
-            -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 1rem; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 2rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
             overflow: hidden;
         }
         .flip-card-front { background-color: #FFFFFF; }
         .dark .flip-card-front { background-color: #111827; border-color: #374151; }
-        .flip-card-back {
-            background: #0B1220; color: white; transform: rotateY(180deg);
-            border: 1px solid #1F2937;
-        }
+        .flip-card-back { background: #0B1220; color: white; transform: rotateY(180deg); border: 1px solid #1F2937; }
         .dark .flip-card-back { background: #000000; }
 
         /* Glowing Effect */
@@ -186,7 +239,13 @@
         .snowflake:nth-of-type(5) { left: 90%; animation-delay: 3s, 1.5s; }
 
         /* --- POWER UP ANIMATION (Hover Trigger) --- */
-        .power-container .unpowered-text {
+        .power-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .unpowered-text {
             color: #4B5563; /* Gray when off */
             text-shadow: none;
             opacity: 0.4;
@@ -217,7 +276,7 @@
             30% { opacity: 1; color: #0B1220; }
             40% { opacity: 0.4; color: #4B5563; }
             50% { opacity: 1; color: #0B1220; }
-            100% { opacity: 1; color: #0B1220; text-shadow: 0 0 1px rgba(139, 92, 246, 0.2); }
+            100% { opacity: 1; color: #0B1220; text-shadow: 0 0 1px rgba(14, 165, 164, 0.2); }
         }
         
         .dark .power-container.powered-up .unpowered-text {
@@ -237,6 +296,52 @@
         @keyframes pulse-green {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Plug & Wire Animation */
+        #power-plug-container {
+            position: absolute;
+            top: 50%;
+            right: -60px; /* Start to the right of text */
+            transform: translate(100px, -50%) rotate(-20deg); /* Offscreen right */
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Utility classes to be toggled by JS */
+        .animate-plug {
+            animation: plug-connect 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        .animate-spark {
+            animation: spark 0.5s ease-out forwards;
+        }
+
+        @keyframes plug-connect {
+            0% { transform: translate(150px, 50px) rotate(-30deg); opacity: 0; }
+            20% { opacity: 1; }
+            70% { transform: translate(20px, 0px) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+        }
+        
+        @keyframes spark {
+            0% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+        
+        .spark-effect {
+            position: absolute;
+            left: -5px; /* Tip of plug */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #fff, #0EA5A4);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 30;
         }
         
         /* Easter Egg */
@@ -264,8 +369,7 @@
     <!-- Floating Brand Logo -->
     <div id="brand-logo" class="fixed top-8 left-4 md:left-8 z-50 cursor-pointer group transition-all duration-300 mt-12" onclick="window.scrollTo(0,0)">
         <div class="flex items-center gap-3">
-            <!-- Updated Logo -->
-            <img src="autum8_logo.png" alt="autum8" class="w-10 h-10 rounded-xl shadow-xl shadow-brand-teal/10 group-hover:scale-105 transition-transform duration-300 object-cover">
+            <img src="autum8_favicon.jpg" alt="autum8" class="w-10 h-10 rounded-xl shadow-xl shadow-brand-teal/10 group-hover:scale-105 transition-transform duration-300 object-cover">
             <span class="hidden lg:block font-bold text-xl text-brand-ink dark:text-white tracking-tight drop-shadow-sm">autum<span class="text-brand-teal">8</span></span>
         </div>
     </div>
@@ -277,46 +381,14 @@
                 <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-brand-teal rounded-t-full"></div>
                 <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-6 bg-brand-teal/20 rounded-full blur-md"></div>
             </div>
-            <a href="#" onclick="window.scrollTo(0,0); setActiveNav(this); return false;" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="home">
-                <span class="hidden md:inline">Home</span>
-                <i class="ph-bold ph-house md:hidden text-lg"></i>
-            </a>
-            
-            <a href="about.html" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2">
-                <span class="hidden md:inline">About</span>
-                <i class="ph-bold ph-user md:hidden text-lg"></i>
-            </a>
-
-            <a href="#pillars" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="pillars">
-                <span class="hidden md:inline">Pillars</span>
-                <i class="ph-bold ph-columns md:hidden text-lg"></i>
-            </a>
-
-            <a href="#services" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="services">
-                <span class="hidden md:inline">Models</span>
-                <i class="ph-bold ph-handshake md:hidden text-lg"></i>
-            </a>
-
-            <a href="#pricing" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="pricing">
-                <span class="hidden md:inline">Pricing</span>
-                <i class="ph-bold ph-currency-dollar md:hidden text-lg"></i>
-            </a>
-
+            <a href="#" onclick="window.scrollTo(0,0); setActiveNav(this); return false;" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="home"><span class="hidden md:inline">Home</span><i class="ph-bold ph-house md:hidden text-lg"></i></a>
+            <a href="about.html" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2"><span class="hidden md:inline">About</span><i class="ph-bold ph-user md:hidden text-lg"></i></a>
+            <a href="#pillars" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="pillars"><span class="hidden md:inline">Pillars</span><i class="ph-bold ph-columns md:hidden text-lg"></i></a>
+            <a href="#services" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="services"><span class="hidden md:inline">Models</span><i class="ph-bold ph-handshake md:hidden text-lg"></i></a>
+            <a href="#pricing" onclick="setActiveNav(this)" class="nav-item relative cursor-pointer text-sm font-semibold px-3 md:px-4 py-2.5 rounded-full text-brand-muted dark:text-gray-400 hover:text-brand-teal dark:hover:text-brand-teal transition-colors flex items-center gap-2" data-target="pricing"><span class="hidden md:inline">Pricing</span><i class="ph-bold ph-currency-dollar md:hidden text-lg"></i></a>
             <div class="w-px h-6 bg-brand-gray-2 dark:bg-white/10 mx-1 hidden md:block"></div>
-
-            <a href="login.html" class="text-sm font-semibold px-3 py-2.5 text-brand-muted dark:text-gray-400 hover:text-brand-teal transition-colors hidden md:block">
-                Login
-            </a>
-
-            <!-- Nex8 AI Link -->
-            <a href="nex8.html" class="text-sm font-semibold px-3 py-2.5 text-brand-muted dark:text-gray-400 hover:text-brand-teal transition-colors hidden md:block">
-                Nex8 AI
-            </a>
-
-            <button onclick="toggleContactModal('General Inquiry')" class="relative cursor-pointer text-sm font-bold px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-teal to-brand-blue text-white shadow-lg shadow-brand-teal/20 hover:shadow-brand-holiday-red/40 hover:scale-105 transition-all flex items-center gap-2 group whitespace-nowrap">
-                <span class="hidden md:inline">Get a Quote</span>
-                <i class="ph-bold ph-arrow-right text-lg group-hover:translate-x-1 transition-transform"></i>
-            </button>
+            <a href="login.html" class="text-sm font-semibold px-3 py-2.5 text-brand-muted dark:text-gray-400 hover:text-brand-teal transition-colors hidden md:block">Login</a>
+            <button onclick="toggleContactModal('General Inquiry')" class="relative cursor-pointer text-sm font-bold px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-teal to-brand-blue text-white shadow-lg shadow-brand-teal/20 hover:shadow-brand-holiday-red/40 hover:scale-105 transition-all flex items-center gap-2 group whitespace-nowrap"><span class="hidden md:inline">Get a Quote</span><i class="ph-bold ph-arrow-right text-lg group-hover:translate-x-1 transition-transform"></i></button>
         </div>
     </nav>
 
@@ -337,11 +409,28 @@
             </div>
             
             <!-- Hover-Triggered Headline -->
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-[1.1] mb-6 animate-fade-up" style="animation-delay: 0.1s;">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-[1.1] mb-6 animate-fade-up relative" style="animation-delay: 0.1s;">
+                
+                <!-- The Text that Powers Up -->
                 <span class="power-container inline-flex items-center gap-2 cursor-pointer" onmouseenter="this.classList.add('powered-up')">
                     <span class="unpowered-text">Fix broken operations,</span>
                     <i class="ph-bold ph-wifi-high text-3xl wifi-icon"></i>
+                    
+                    <!-- Plug Animation Container -->
+                    <div id="power-plug-container" class="hidden md:block">
+                        <!-- Wire -->
+                        <svg width="100" height="40" viewBox="0 0 100 40" class="overflow-visible">
+                            <path d="M0 20 C 30 20, 50 20, 80 20" stroke="#4B5563" stroke-width="4" fill="none" stroke-linecap="round" />
+                            <!-- Plug Head -->
+                            <rect x="0" y="10" width="20" height="20" fill="#4B5563" rx="2" />
+                            <rect x="-10" y="14" width="10" height="4" fill="#9CA3AF" />
+                            <rect x="-10" y="22" width="10" height="4" fill="#9CA3AF" />
+                        </svg>
+                        <!-- Spark -->
+                        <div id="power-spark" class="spark-effect"></div>
+                    </div>
                 </span>
+                
                 <br>
                 make workflows <span id="hero-text-rotator" class="gradient-text-accent inline-block transition-all duration-500 transform translate-y-0 opacity-100 pb-2">Effortless.</span>
             </h1>
@@ -419,7 +508,7 @@
         </div>
     </section>
 
-    <!-- Micro Case Studies (Visuals) -->
+    <!-- Micro Case Studies (New Visuals) -->
     <section class="py-24 bg-white dark:bg-brand-ink">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-brand-ink dark:text-white mb-12 text-center">Results, Not Jargon.</h2>
@@ -495,7 +584,7 @@
                 <div class="flip-card group"><div class="flip-card-inner"><div class="flip-card-front"><div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6"><i class="ph-fill ph-clipboard-text text-3xl text-brand-teal"></i></div><h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Deep Dive Audit</h3><p class="text-sm text-brand-muted dark:text-gray-400">The starting point.</p></div><div class="flip-card-back"><h3 class="text-lg font-bold text-white mb-4">Diagnostics</h3><ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2"><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span> Full stack review</li></ul><a href="#" onclick="toggleContactModal('Audit'); return false;" class="w-full py-2.5 block text-center rounded-lg bg-brand-teal text-white font-bold text-sm">Book Audit</a></div></div></div>
                 <div class="flip-card group"><div class="flip-card-inner"><div class="flip-card-front"><div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6"><i class="ph-fill ph-stack text-3xl text-brand-blue"></i></div><h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Custom Builds</h3><p class="text-sm text-brand-muted dark:text-gray-400">Project-based flows.</p></div><div class="flip-card-back"><h3 class="text-lg font-bold text-white mb-4">Scope</h3><ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2"><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> End-to-end auto</li></ul><a href="#" onclick="toggleContactModal('Builds'); return false;" class="w-full py-2.5 block text-center rounded-lg bg-brand-blue text-white font-bold text-sm">Start Project</a></div></div></div>
                 <div class="flip-card group"><div class="flip-card-inner"><div class="flip-card-front"><div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6"><i class="ph-fill ph-siren text-3xl text-brand-holiday-red"></i></div><h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Urgent Fix</h3><p class="text-sm text-brand-muted dark:text-gray-400">Emergency stabilization.</p></div><div class="flip-card-back"><h3 class="text-lg font-bold text-white mb-4">Response</h3><ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2"><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-holiday-red"></span> Same-day triage</li></ul><a href="#" onclick="toggleContactModal('Fix'); return false;" class="w-full py-2.5 block text-center rounded-lg bg-brand-holiday-red text-white font-bold text-sm">Fix It Now</a></div></div></div>
-                <div class="flip-card group"><div class="flip-card-inner"><div class="flip-card-front"><div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-brand-ink dark:text-white mb-6"><i class="ph-fill ph-infinity text-3xl text-brand-purple"></i></div><h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Retainer</h3><p class="text-sm text-brand-muted dark:text-gray-400">Monthly support.</p></div><div class="flip-card-back"><h3 class="text-lg font-bold text-white mb-4">Partnership</h3><ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2"><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span> Maintenance</li></ul><a href="#" onclick="toggleContactModal('Retainer'); return false;" class="w-full py-2.5 block text-center rounded-lg bg-brand-purple text-white font-bold text-sm">View Plans</a></div></div></div>
+                <div class="flip-card group"><div class="flip-card-inner"><div class="flip-card-front"><div class="w-16 h-16 bg-brand-gray-1 dark:bg-gray-700 rounded-2xl shadow-sm flex items-center justify-center text-brand-ink dark:text-white mb-6"><i class="ph-fill ph-infinity text-3xl text-brand-purple"></i></div><h3 class="text-xl font-bold text-brand-ink dark:text-white mb-2">Retainer</h3><p class="text-sm text-brand-muted dark:text-gray-400">Monthly support.</p></div><div class="flip-card-back"><h3 class="text-lg font-bold text-white mb-4">Partnership</h3><ul class="space-y-2 text-xs text-gray-300 text-left w-full mb-6 px-2"><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-purple"></span> Maintenance</li></ul><a href="#" onclick="toggleContactModal('Retainer'); return false;" class="w-full py-2.5 block text-center rounded-lg bg-brand-purple text-white font-bold text-sm">View Plans</a></div></div></div>
             </div>
         </div>
     </section>
